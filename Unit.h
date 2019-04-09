@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 //using std::cout, std::endl, std::boolalpha, std::istringstream;
 
