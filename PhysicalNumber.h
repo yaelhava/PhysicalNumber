@@ -16,28 +16,40 @@ namespace ariel{
             type = t;
         }
 
-        PhysicalNumber operator+   (const PhysicalNumber& a ) const;
-        PhysicalNumber operator-   (const PhysicalNumber& a ) const;
-        PhysicalNumber& operator++  () ;
-        PhysicalNumber& operator--  () ;
-        PhysicalNumber& operator+=      (const PhysicalNumber& a );
+        // PhysicalNumber(PhysicalNumber &pn){
+        //     value = pn.value;
+        //     type = pn.type;
+        // }
+
+        PhysicalNumber operator+   (const PhysicalNumber& num ) const;
+        PhysicalNumber operator-   (const PhysicalNumber& num ) const;
+        PhysicalNumber& operator++  ();
+        PhysicalNumber& operator--  ();
+        PhysicalNumber& operator++  (int);
+        PhysicalNumber& operator--  (int);
+        PhysicalNumber& operator+=  (const PhysicalNumber& num );
         PhysicalNumber operator+() const;
-        PhysicalNumber& operator-=      (const PhysicalNumber& a );
+        PhysicalNumber& operator-=  (const PhysicalNumber& num );
         PhysicalNumber operator-() const;
 
 
-        bool operator<  (const PhysicalNumber a) const;
-        bool operator<= (const PhysicalNumber a) const;
-        bool operator>= (const PhysicalNumber a)const;
-        bool operator>  (const PhysicalNumber a)const;
-        bool operator== (const PhysicalNumber a)const;
-        bool operator!= (const PhysicalNumber a)const;
+        bool operator<  (const PhysicalNumber num ) const;
+        bool operator<= (const PhysicalNumber num ) const;
+        bool operator>= (const PhysicalNumber num )const;
+        bool operator>  (const PhysicalNumber num )const;
+        bool operator== (const PhysicalNumber num )const;
+        bool operator!= (const PhysicalNumber num )const;
 
-        friend ostream& operator<< (ostream& a, const PhysicalNumber& b);
-        friend istream& operator>> (istream& a, const PhysicalNumber& b); 
+        friend ostream& operator<< (ostream& os , const PhysicalNumber& num );
+        friend istream& operator>> (istream& is , const PhysicalNumber& num ); 
         
     
-        
+        private:
+        double convert(double val, Unit t) const;
+        PhysicalNumber defineType(double val) const;
+
+
+
 
 
        
