@@ -11,6 +11,7 @@ namespace ariel{
         double value;
         Unit type;
 
+        PhysicalNumber(){}
         PhysicalNumber(double num,Unit t){
             value = num;
             type = t;
@@ -25,17 +26,17 @@ namespace ariel{
         PhysicalNumber operator-   (const PhysicalNumber& num ) const;
         PhysicalNumber& operator++  ();
         PhysicalNumber& operator--  ();
-        PhysicalNumber& operator++  (int);
-        PhysicalNumber& operator--  (int);
+        PhysicalNumber operator++  (int);
+        PhysicalNumber operator--  (int);
         PhysicalNumber& operator+=  (const PhysicalNumber& num );
         PhysicalNumber operator+() const;
         PhysicalNumber& operator-=  (const PhysicalNumber& num );
         PhysicalNumber operator-() const;
 
 
-        bool operator<  (const PhysicalNumber num ) const;
+        bool operator>=  (const PhysicalNumber num ) const;
         bool operator<= (const PhysicalNumber num ) const;
-        bool operator>= (const PhysicalNumber num )const;
+        bool operator< (const PhysicalNumber num )const;
         bool operator>  (const PhysicalNumber num )const;
         bool operator== (const PhysicalNumber num )const;
         bool operator!= (const PhysicalNumber num )const;
