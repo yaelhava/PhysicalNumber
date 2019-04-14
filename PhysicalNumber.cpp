@@ -154,8 +154,8 @@ std::istream &ariel::operator>>(istream &is, PhysicalNumber &num)
     string str;
     is >> temp >> str;
     char const *units[] = {"cm", "sec", "g", "m", "min", "kg", "km", "hour", "ton"};
-    int save;
-    bool flag = false;
+    int save = -1;
+    bool flag = true;
 
     if (str.find("[") != string::npos && str.find("]") != string::npos)
     { //valid input
@@ -174,9 +174,9 @@ std::istream &ariel::operator>>(istream &is, PhysicalNumber &num)
         }
     }
 
-    if(flag){
+    if (flag)
+    {
         return is;
-
     }
 
     num.value = temp;
@@ -334,7 +334,7 @@ PhysicalNumber PhysicalNumber::defineType(double val) const
 //     //  cout << flag << endl;
 //     cout << "y now is: " << y << endl;
 
-//     istringstream input("333[kgg]");
+//     istringstream input("333[kg");
 //     input >> x;
 //     cout << x << endl;
 
