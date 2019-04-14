@@ -1,6 +1,9 @@
 #include "PhysicalNumber.h"
 #include "Unit.h"
-//#include <string>
+#include <string.h>
+
+#include <sstream>
+
 
 using namespace ariel;
 
@@ -152,8 +155,31 @@ std::ostream &ariel::operator<< (ostream &os, const PhysicalNumber &num)
     return os;
 }
 
-std::istream &ariel::operator>> (istream &is, const PhysicalNumber &num)
+std::istream &ariel::operator>> (istream &is,  PhysicalNumber &num)
 {
+    double temp;
+    string str; 
+    is >> temp >> str;
+   
+    if( str.find("[") == string::npos || str.find("]") == string::npos){
+        throw runtime_error("INVALID INPUT");
+    }
+    char const *units[] = {"cm", "sec", "g", "m", "min", "kg", "km", "hour", "ton"};
+    int save;
+    for(int i = 0; i < 9; i++){
+        if(!(str.substr(str.find("[") + 1, str.length() - 2).compare(units[i]))){   //if equal
+            save = i;
+        }
+        else{
+            is.setstate(ios::failbit);
+        }
+    }
+
+    num.value = temp;
+    num.type = static_cast<Unit>(save);
+
+
+    
     return is;
 }
 
@@ -255,57 +281,63 @@ PhysicalNumber PhysicalNumber::defineType(double val) const
     return result;
 }
 
-// int main()
-// {
-//     cout << "hi" << endl;
-//     PhysicalNumber p(3, Unit::HOUR);
-//     PhysicalNumber t(10, Unit::SEC);
+int main()
+{
+    cout << "hi" << endl;
+    PhysicalNumber p(3, Unit::HOUR);
+    PhysicalNumber t(10, Unit::SEC);
 
-//     cout << p + t << endl;
-//     cout << t + p << endl;
+    cout << p + t << endl;
+    cout << t + p << endl;
 
-//     cout << "***************1****************" << endl;
+    cout << "***************1****************" << endl;
 
-//     //cout << (p+=t) << endl;
+    //cout << (p+=t) << endl;
 
-//     cout << (p -= t) << endl;
+    cout << (p -= t) << endl;
 
-//     cout << "**************2*****************" << endl;
+    cout << "**************2*****************" << endl;
 
-//     cout << (++p) << endl;
-//     cout << (--p) << endl;
+    cout << (++p) << endl;
+    cout << (--p) << endl;
 
-//     cout << "***************3****************" << endl;
+    cout << "***************3****************" << endl;
 
-//     PhysicalNumber a(6, Unit::M);
-//     PhysicalNumber b(5, Unit::KM);
+    PhysicalNumber a(6, Unit::M);
+    PhysicalNumber b(5, Unit::KM);
 
-//     cout << a - b << endl;
-//     cout << b - a << endl;
+    cout << a - b << endl;
+    cout << b - a << endl;
 
-//     cout << "**************4*****************" << endl;
+    cout << "**************4*****************" << endl;
 
-//     cout << -a << endl;
+    cout << -a << endl;
 
-//     cout << "***************5****************" << endl;
+    cout << "***************5****************" << endl;
 
-//     PhysicalNumber x(60, Unit::MIN);
-//     PhysicalNumber y(1, Unit::HOUR);
+    PhysicalNumber x(60, Unit::MIN);
+    PhysicalNumber y(1, Unit::KG);
 
-//     //  cout << "x now is: " << x << endl;
+    //  cout << "x now is: " << x << endl;
 
-//     // cout << (x++) << endl;
-//     //      cout << "x now is: " << x << endl;
+    // cout << (x++) << endl;
+    //      cout << "x now is: " << x << endl;
 
-//     //  cout << (x--) << endl;
-//       cout << "x now is: " << x << endl;
+    //  cout << (x--) << endl;
+      cout << "x now is: " << x << endl;
 
-//  cout << "***************6****************" << endl;
+ cout << "***************6****************" << endl;
 
-//     bool flag = y != x;
-//     cout << flag << endl;
-//           cout << "y now is: " << y << endl;
+   // bool flag = y != x;
+  //  cout << flag << endl;
+          cout << "y now is: " << y << endl;
+
+    istringstream input("333[kgg]");
+    input >> x;
+    cout << x << endl;     
+    
+  //  cout << x + y << endl;
 
     
-//     return 0;
-// }
+    return 0;
+}

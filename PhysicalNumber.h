@@ -42,7 +42,7 @@ namespace ariel{
         bool operator!= (const PhysicalNumber num )const;
 
         friend ostream& operator<< (ostream& os , const PhysicalNumber& num );
-        friend istream& operator>> (istream& is , const PhysicalNumber& num ); 
+        friend istream& operator>> (istream& is ,  PhysicalNumber& num ); 
         
     
         private:

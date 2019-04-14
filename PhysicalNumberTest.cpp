@@ -125,6 +125,9 @@ int main() {
     .CHECK_OUTPUT((f+e-f), "100000[g]")
     .CHECK_OUTPUT((a+b-b), "3.3[km]")
     .CHECK_OUTPUT((g+e+e), "2.2[ton]")
+    .CHECK_OUTPUT((c++), "1[hour]")  ///?????!?!?!?!
+    .CHECK_OUTPUT((g--), "2[ton]")  //?!?!?!?!?!?!?
+
 
     .CHECK_OK(istringstream("26[sec]") >> i)
     .CHECK_OK(istringstream("12[ton]") >> g)
