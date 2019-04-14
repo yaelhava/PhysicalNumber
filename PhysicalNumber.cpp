@@ -1,14 +1,11 @@
 #include "PhysicalNumber.h"
 #include "Unit.h"
-#include <string.h>
-
-#include <sstream>
 
 using namespace ariel;
 
-PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber &num) const
-{
 
+PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber &num) const           
+{                                                                             // X + Y                      
     double ans;
 
     if ((int)this->type % 3 == (int)num.type % 3)
@@ -25,63 +22,64 @@ PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber &num) const
 }
 
 PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber &num) const
-{
+{                                                                             // X - Y                      
     PhysicalNumber temp((-1) * (num.value), num.type);
     return (*this + temp);
 }
 
 PhysicalNumber &PhysicalNumber::operator++()
-{
+{                                                                             // ++X                    
     this->value++;
     return *this;
 }
 
 PhysicalNumber &PhysicalNumber::operator--()
-{
+{                                                                             // --X                     
     this->value--;
     return *this;
 }
 
 PhysicalNumber PhysicalNumber::operator++(int)
-{
+{                                                                             // X++                      
     PhysicalNumber res(this->value, this->type);
     ++(*this);
     return res;
 }
 
 PhysicalNumber PhysicalNumber::operator--(int)
-{
+{                                                                             // X--                      
     PhysicalNumber res(this->value, this->type);
     --(*this);
     return res;
 }
 
 PhysicalNumber &PhysicalNumber::operator+=(const PhysicalNumber &num)
-{
+{                                                                             // X += Y                     
     *this = *this + num;
     return *this;
 }
 
 PhysicalNumber PhysicalNumber::operator+() const
-{
+{                                                                             // X                     
     return *this;
 }
 
-// +A
+
 PhysicalNumber &PhysicalNumber::operator-=(const PhysicalNumber &num)
-{
+{                                                                             // X -= Y                     
     *this = *this - num;
     return *this;
 }
 
-// num = A-B
+
 PhysicalNumber PhysicalNumber::operator-() const
-{
+{                                                                             // -X                     
     return PhysicalNumber((-1) * this->value, this->type);
-} // -A
+} 
+
 
 bool PhysicalNumber::operator>=(const PhysicalNumber num) const
-{
+{                                                                             // CHECK IF X >= Y                     
     if ((int)this->type % 3 == (int)num.type % 3)
     {
         double thisTemp = convert(this->value, this->type);
@@ -95,7 +93,7 @@ bool PhysicalNumber::operator>=(const PhysicalNumber num) const
 }
 
 bool PhysicalNumber::operator<=(const PhysicalNumber num) const
-{
+{                                                                             // CHECK IF X <= Y                     
     if ((int)this->type % 3 == (int)num.type % 3)
     {
         double thisTemp = convert(this->value, this->type);
@@ -109,7 +107,7 @@ bool PhysicalNumber::operator<=(const PhysicalNumber num) const
 }
 
 bool PhysicalNumber::operator<(const PhysicalNumber num) const
-{
+{                                                                             // CHECK IF X < Y                     
     if (*this <= num && !(*this >= num))
     {
         return true;
@@ -118,7 +116,7 @@ bool PhysicalNumber::operator<(const PhysicalNumber num) const
 }
 
 bool PhysicalNumber::operator>(const PhysicalNumber num) const
-{
+{                                                                             // CHECK IF X > Y                     
     if (!(*this <= num) && *this >= num)
     {
         return true;
@@ -127,7 +125,7 @@ bool PhysicalNumber::operator>(const PhysicalNumber num) const
 }
 
 bool PhysicalNumber::operator==(const PhysicalNumber num) const
-{
+{                                                                             // CHECK IF X == Y                     
     if (*this <= num && *this >= num)
     {
         return true;
@@ -136,45 +134,46 @@ bool PhysicalNumber::operator==(const PhysicalNumber num) const
 }
 
 bool PhysicalNumber::operator!=(const PhysicalNumber num) const
-{
+{                                                                             // CHECK IF X != Y                     
     bool flag = *this == num;
     return !flag;
 }
 
+
 std::ostream &ariel::operator<<(ostream &os, const PhysicalNumber &num)
-{
+{                                                                             // OUTPUT OF PhysicalNumber     
     char const *units[] = {"cm", "sec", "g", "m", "min", "kg", "km", "hour", "ton"};
     os << num.value << "[" << units[(int)num.type] << "]";
     return os;
 }
 
 std::istream &ariel::operator>>(istream &is, PhysicalNumber &num)
-{
+{                                                                             // INPUT OF PhysicalNumber     
     double temp;
     string str;
     is >> temp >> str;
     char const *units[] = {"cm", "sec", "g", "m", "min", "kg", "km", "hour", "ton"};
     int save = -1;
-    bool flag = true;
+    bool isNotValid = true;
 
     if (str.find("[") != string::npos && str.find("]") != string::npos)
-    { //valid input
+    {                                                                 //valid input
         for (int i = 0; i < 9; i++)
         {
             if (str.substr(str.find("[") + 1, str.length() - 2).compare(units[i]) == 0)
-            { //if equal
+            {                                                                       //if equal
                 save = i;
-                flag = false;
+                isNotValid = false;
                 break;
             }
             else
             {
-                flag = true;
+                isNotValid = true;
             }
         }
     }
 
-    if (flag)
+    if (isNotValid)
     {
         return is;
     }
@@ -186,10 +185,10 @@ std::istream &ariel::operator>>(istream &is, PhysicalNumber &num)
 }
 
 double PhysicalNumber::convert(double val, Unit t) const
-{
+{                                                               //convert by type to the smallest unit
     double result;
 
-    if ((int)this->type % 3 == 0)
+    if ((int)this->type % 3 == 0)                               //distance
     {
         switch (t)
         {
@@ -204,7 +203,7 @@ double PhysicalNumber::convert(double val, Unit t) const
         }
     }
     else if ((int)this->type % 3 == 1)
-    {
+    {                                                           //time
         switch (t)
         {
         case Unit::MIN:
@@ -218,7 +217,7 @@ double PhysicalNumber::convert(double val, Unit t) const
         }
     }
     else if ((int)this->type % 3 == 2)
-    {
+    {                                                           //weight
         switch (t)
         {
         case Unit::KG:
@@ -235,10 +234,10 @@ double PhysicalNumber::convert(double val, Unit t) const
 }
 
 PhysicalNumber PhysicalNumber::defineType(double val) const
-{
+{                                                              //return to original unit
     PhysicalNumber result;
 
-    if ((int)this->type % 3 == 0)
+    if ((int)this->type % 3 == 0)                               //distance
     {
         switch (this->type)
         {
@@ -253,7 +252,7 @@ PhysicalNumber PhysicalNumber::defineType(double val) const
         }
     }
     else if ((int)this->type % 3 == 1)
-    {
+    {                                                           //time
         switch (this->type)
         {
         case Unit::MIN:
@@ -267,7 +266,7 @@ PhysicalNumber PhysicalNumber::defineType(double val) const
         }
     }
     else if ((int)this->type % 3 == 2)
-    {
+    {                                                           //weight
         switch (this->type)
         {
         case Unit::KG:
@@ -283,62 +282,3 @@ PhysicalNumber PhysicalNumber::defineType(double val) const
     return result;
 }
 
-// int main()
-// {
-//     cout << "hi" << endl;
-//     PhysicalNumber p(3, Unit::HOUR);
-//     PhysicalNumber t(10, Unit::SEC);
-
-//     cout << p + t << endl;
-//     cout << t + p << endl;
-
-//     cout << "***************1****************" << endl;
-
-//     //cout << (p+=t) << endl;
-
-//     cout << (p -= t) << endl;
-
-//     cout << "**************2*****************" << endl;
-
-//     cout << (++p) << endl;
-//     cout << (--p) << endl;
-
-//     cout << "***************3****************" << endl;
-
-//     PhysicalNumber a(6, Unit::M);
-//     PhysicalNumber b(5, Unit::KM);
-
-//     cout << a - b << endl;
-//     cout << b - a << endl;
-
-//     cout << "**************4*****************" << endl;
-
-//     cout << -a << endl;
-
-//     cout << "***************5****************" << endl;
-
-//     PhysicalNumber x(60, Unit::MIN);
-//     PhysicalNumber y(1, Unit::KG);
-
-//     //  cout << "x now is: " << x << endl;
-
-//     // cout << (x++) << endl;
-//     //      cout << "x now is: " << x << endl;
-
-//     //  cout << (x--) << endl;
-//     cout << "x now is: " << x << endl;
-
-//     cout << "***************6****************" << endl;
-
-//     // bool flag = y != x;
-//     //  cout << flag << endl;
-//     cout << "y now is: " << y << endl;
-
-//     istringstream input("333[kg");
-//     input >> x;
-//     cout << x << endl;
-
-//     //  cout << x + y << endl;
-
-//     return 0;
-// }

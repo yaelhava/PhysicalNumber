@@ -23,17 +23,23 @@ int main() {
     PhysicalNumber b(300, Unit::M);
     PhysicalNumber c(2, Unit::HOUR);
     PhysicalNumber d(30, Unit::MIN);
-    
-    PhysicalNumber Gram(30, Unit::G);
-    PhysicalNumber Cm(30, Unit::CM);
-    PhysicalNumber KM(30, Unit::KM);
-    PhysicalNumber MET(200, Unit::M);
-
+    PhysicalNumber e(100, Unit::KG);
+    PhysicalNumber f(200 , Unit::G);
+    PhysicalNumber g(1, Unit::TON);
+    PhysicalNumber h(10, Unit::CM);
+    PhysicalNumber i(7, Unit::SEC);
 
     testcase
-    .setname("Basic output")
+    .setname("Basic output")                                          /*OUTPUT CHECK*/
     .CHECK_OUTPUT(a, "2[km]")
     .CHECK_OUTPUT(b, "300[m]")
+
+
+    .CHECK_OUTPUT(e, "100[kg]")
+    .CHECK_OUTPUT(f, "200[g]")
+    .CHECK_OUTPUT(g, "1[ton]")
+    .CHECK_OUTPUT(h, "10[cm]")
+    .CHECK_OUTPUT(i, "7[sec]")
 
     .setname("Compatible dimensions")
     .CHECK_OUTPUT(b+a, "2300[m]")
@@ -45,12 +51,100 @@ int main() {
     .CHECK_OUTPUT(d, "30[min]")
     .CHECK_OUTPUT(d+c, "150[min]")
 
+    .CHECK_OUTPUT(e+f, "100.2[kg]")
+    .CHECK_OUTPUT(f+e, "100200[g]")
+    .CHECK_OUTPUT(i+c, "7207[sec]")
+    .CHECK_OUTPUT(g-e, "0.9[ton]")
+    .CHECK_OUTPUT((g+=g), "2[ton]")
+    .CHECK_OUTPUT(g, "2[ton]")
+    .CHECK_OUTPUT(-g, "-2[ton]")
+    .CHECK_OUTPUT(+i, "7[sec]")
+    .CHECK_OUTPUT((++i), "8[sec]")
+    .CHECK_OUTPUT(d-d, "0[min]")
+    .CHECK_OUTPUT((f-=f), "0[g]")
+    .CHECK_OUTPUT((f+=e), "100000[g]")
+    .CHECK_EQUAL((f==e), true)
+    .CHECK_OUTPUT(g+f, "2.1[ton]")
+    .CHECK_OUTPUT(a+h, "2.3001[km]")
+    .CHECK_OUTPUT(h+b, "30010[cm]")
+    .CHECK_OUTPUT(b+h, "300.1[m]")
+    .CHECK_OUTPUT((h+=h), "20[cm]")
+    .CHECK_OUTPUT((h+=h), "40[cm]")
+    .CHECK_OUTPUT(h-h, "0[cm]")
+    .CHECK_OUTPUT(b+b, "600[m]")
+    .CHECK_OUTPUT((++a), "3.3[km]")
+    .CHECK_OUTPUT((--c), "1[hour]")
+    .CHECK_OUTPUT(c+d, "1.5[hour]")
+
+                                                                    /*THROWS ERROR CHECK*/
+
+
+    .CHECK_THROWS(a+e)
+    .CHECK_THROWS(c+=h)
+    .CHECK_THROWS(i-f)
+    .CHECK_THROWS(d<h)
+    .CHECK_THROWS(g<=i)
+    .CHECK_THROWS(b==f)
+    .CHECK_THROWS(g+=h)
+    .CHECK_THROWS(e+c)
+    .CHECK_THROWS(f+c)
+    .CHECK_THROWS(a-g)
+    .CHECK_THROWS(c<b)
+    .CHECK_THROWS(b+=g)
+    .CHECK_THROWS(i-a)
+    .CHECK_THROWS(f-=i)
+    .CHECK_THROWS(a!=e)
+    .CHECK_THROWS(d<=g)
+    .CHECK_THROWS(b>g)
+    .CHECK_THROWS(h>(e+f))
+    .CHECK_THROWS(i==f)
+
+                                                                    /*EQUALS CHECK*/
+
+    .CHECK_EQUAL((f!=g), true)
+    .CHECK_EQUAL((e!=f), false)
+    .CHECK_EQUAL((c>i), true)
+    .CHECK_EQUAL((h>a), false)
+    .CHECK_EQUAL((d==c), false)
+    .CHECK_EQUAL((b>=a), false)
+    .CHECK_EQUAL((a>=b), true)
+    .CHECK_EQUAL((b<=a), true)
+    .CHECK_EQUAL((e>=f), true)
+    .CHECK_EQUAL((g>=f), true)
+    .CHECK_EQUAL((i!=c), true)
+    .CHECK_EQUAL((i==c), false)
+    .CHECK_EQUAL((d>=i), true)
+    .CHECK_EQUAL((a>=h), true)
+    .CHECK_EQUAL((f<=e), true)
+    .CHECK_EQUAL((f>=e), true)
+    .CHECK_EQUAL((g!=e), true)
+    .CHECK_EQUAL((e>g), false)
+    .CHECK_EQUAL((i>d), false)
+
+    .CHECK_OUTPUT((c+d+d), "2[hour]")
+    .CHECK_OUTPUT((e+f-f), "100[kg]")
+    .CHECK_OUTPUT((f+e-f), "100000[g]")
+    .CHECK_OUTPUT((a+b-b), "3.3[km]")
+    .CHECK_OUTPUT((g+e+e), "2.2[ton]")
+    .CHECK_OUTPUT((c++), "1[hour]")  
+    .CHECK_OUTPUT((g--), "2[ton]") 
+
+                                                                    /*INPUT CHECK*/
+
+    .CHECK_OK(istringstream("26[sec]") >> i)
+    .CHECK_OK(istringstream("12[ton]") >> g)
+    .CHECK_OUTPUT(g, "12[ton]")
+    .CHECK_OUTPUT(i, "26[sec]")
+
+    .CHECK_OK(istringstream("23[sec") >> i)
+    .CHECK_OK(istringstream("7[toon]") >> g)
+
+
     .setname("Incompatible dimensions")
     .CHECK_THROWS(a+c)
     .CHECK_THROWS(a+d)
     .CHECK_THROWS(b+c)
     .CHECK_THROWS(b+d)
-    
 
     .setname("Basic input")
     .CHECK_OK(istringstream("700[kg]") >> a)
@@ -58,125 +152,7 @@ int main() {
 
     // YOUR TESTS - INSERT AS MANY AS YOU WANT
 
-      .setname("Should not work")
-      .CHECK_THROWS(Gram+Cm)
-      .CHECK_THROWS(Cm+Gram)
-      .CHECK_THROWS(Gram+=Cm)
-      .CHECK_THROWS(Cm+=Gram)
-      .CHECK_THROWS(Cm-=Gram)
-      .CHECK_THROWS(Gram-=Cm)
-      .CHECK_THROWS(Cm-Gram)
-      .CHECK_THROWS(Gram-Cm)
-      .CHECK_THROWS(Cm < Gram)
-      .CHECK_THROWS(Gram > KM)
-      .CHECK_THROWS(Gram >= KM)
-      .CHECK_THROWS(Cm <= Gram)
-      .CHECK_THROWS(KM <= Gram)
-      .CHECK_THROWS(a <= b)
-      .CHECK_THROWS(b <= c)
-      .CHECK_THROWS(b += Gram)
-      .CHECK_THROWS(a -= d)
-      .CHECK_THROWS(c += MET)
-      .CHECK_THROWS(c -= MET)
-      .CHECK_THROWS(MET -= c)
-      .CHECK_THROWS(MET += c)
-      .CHECK_THROWS(Gram < KM)
-       .CHECK_OK(istringstream("200[g") >> Gram)
-      .CHECK_OK(istringstream("0.2[]") >> a)
-      .CHECK_OK(istringstream("200g]") >> Gram)
-      .CHECK_OK(istringstream("0.2[kgg]") >> a)
-      .CHECK_OK(istringstream("122.2kg") >> a)
-      .CHECK_OK(istringstream("1332.2[to n]") >> a)
-      .CHECK_OK(istringstream("[ton]1332.2") >> a)
-
-
-      .setname("Should work")
-
-     .CHECK_OUTPUT(++Gram, "31[g]")
-      .CHECK_OUTPUT(--Gram, "30[g]")
-      .CHECK_OUTPUT(--Cm, "29[cm]")
-      .CHECK_OUTPUT(++Cm, "30[cm]")
-      .CHECK_OUTPUT((Gram+=Gram), "60[g]")
-      .CHECK_OUTPUT((Cm+=Cm), "60[cm]")
-      .CHECK_OUTPUT((-Gram),"-60[g]")
-      .CHECK_OUTPUT(+Gram,"60[g]")
-      .CHECK_OUTPUT(Gram-Gram,"0[g]")
-      .CHECK_OUTPUT((KM+=MET) , "30.2[km]")
-      .CHECK_OUTPUT((Cm-=Cm),"0[cm]")
-      .CHECK_OUTPUT(Cm,"0[cm]")
-
-
-
-      .CHECK_OUTPUT((Cm+=MET),"20000[cm]")
-      .CHECK_OUTPUT((MET+=Cm) , "400[m]")
-      .CHECK_OUTPUT((++MET) , "401[m]")
-      .CHECK_OUTPUT((--MET) , "400[m]")
-      .CHECK_OUTPUT((-MET) , "-400[m]")
-      .CHECK_OUTPUT((+MET) , "400[m]")
-      .CHECK_OUTPUT(Gram++, "60[g]")
-      .CHECK_OUTPUT(Gram, "61[g]")
-      .CHECK_OUTPUT(Gram--, "61[g]")
-      .CHECK_OUTPUT(Gram, "60[g]")
-
-
-
-      .CHECK_EQUAL(Cm < KM, true)
-      .CHECK_EQUAL(Cm > KM, false)
-      .CHECK_EQUAL(Cm != KM, true)
-      .CHECK_EQUAL(Cm == KM, false)
-      .CHECK_EQUAL(Cm == Cm, true)
-      .CHECK_EQUAL(MET > Cm, true)
-      .CHECK_EQUAL(MET != Cm, true)
-      .CHECK_EQUAL(MET > Cm, true)
-      .CHECK_EQUAL(MET >= Cm, true)
-      .CHECK_OK(istringstream("200[m]") >> MET)
-      .CHECK_OUTPUT(MET, "200[m]")
-      .CHECK_EQUAL(MET == Cm, true)
-      .CHECK_OK(istringstream("2000[g]") >> Gram)
-      .CHECK_OK(istringstream("2[kg]") >> a)
-      .CHECK_OUTPUT(a, "2[kg]")
-      .CHECK_EQUAL(Gram == a, true)
-      .CHECK_EQUAL(Gram != a, false)
-      .CHECK_OUTPUT((--Gram) , "1999[g]")
-      .CHECK_EQUAL(Gram != a, true)
-      .CHECK_EQUAL(Gram == a, false)
-      .CHECK_OK(istringstream("200[g]") >> Gram)
-      .CHECK_OK(istringstream("0.2[kg]") >> a)
-      .CHECK_OUTPUT(Gram , "200[g]")
-      .CHECK_OUTPUT(a , "0.2[kg]")
-      .CHECK_EQUAL(Gram != a, false)
-      .CHECK_EQUAL(Gram == a, true)
-
-      .CHECK_OK(istringstream("30[min]") >> b)
-      .CHECK_OK(istringstream("0.5[hour]") >> c)
-      .CHECK_OUTPUT(b , "30[min]")
-      .CHECK_OUTPUT(c , "0.5[hour]")
-
-      .CHECK_OK(istringstream("1[ton]") >> b)
-      .CHECK_OK(istringstream("1000[kg]") >> c)
-      .CHECK_OUTPUT(b , "1[ton]")
-      .CHECK_OUTPUT(c , "1000[kg]")
-
-      .CHECK_EQUAL(b != c, false)
-      .CHECK_EQUAL(b == c, true)
-
-      .CHECK_OK(istringstream("0.5[km]") >> b)
-      .CHECK_OK(istringstream("500[m]") >> c)
-      .CHECK_OUTPUT(b , "0.5[km]")
-      .CHECK_OUTPUT(c , "500[m]")
-
-      .CHECK_EQUAL(b != c, false)
-      .CHECK_EQUAL(b == c, true)
-      .CHECK_OUTPUT((b+b+c), "1.5[km]")
-      .CHECK_OUTPUT((c+b+b), "1500[m]")
-      .CHECK_OUTPUT((c+b-b), "500[m]")
-      .CHECK_OUTPUT((b-c-c+b), "0[km]")
-      .CHECK_EQUAL((b+c > b), true)
-      .CHECK_EQUAL((b-c < b), true)
-      .CHECK_OUTPUT((b+=c+=b), "1.5[km]")
-      .CHECK_OUTPUT(b, "1.5[km]")
-      .CHECK_OUTPUT(c, "1000[m]")
-
+      .setname("...")
 
       .print(cout, /*show_grade=*/false);
       grade = testcase.grade();
@@ -184,7 +160,6 @@ int main() {
       testcase.print_signal(signal);
       grade = 0;
     }
-
     cout <<  "*** Grade: " << grade << " ***" << endl;
     return grade;
 }

@@ -1,12 +1,10 @@
 #pragma once
 #include <iostream>
-//using std::cout, std::endl, std::boolalpha, std::istringstream;
-
-
 
 
 namespace ariel{
 
+    //this enum represents units of measurement 
 
     enum class Unit{
             CM, SEC , G,
@@ -14,9 +12,4 @@ namespace ariel{
             KM,HOUR ,  TON
        
     };
-
-
-
-
-
 }

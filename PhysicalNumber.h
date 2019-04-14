@@ -1,10 +1,14 @@
 #include <iostream>
-using namespace std;
 #include "Unit.h"
+#include <string.h>
+#include <sstream>
+
+using namespace std;
 
 namespace ariel{
 
-    
+    //this class separate between units of measurement - distsnce, time and weight 
+
     class PhysicalNumber{
 
         public:
@@ -17,11 +21,7 @@ namespace ariel{
             type = t;
         }
 
-        // PhysicalNumber(PhysicalNumber &pn){
-        //     value = pn.value;
-        //     type = pn.type;
-        // }
-
+                                                                            //aritmethic operators methods
         PhysicalNumber operator+   (const PhysicalNumber& num ) const;
         PhysicalNumber operator-   (const PhysicalNumber& num ) const;
         PhysicalNumber& operator++  ();
@@ -33,6 +33,7 @@ namespace ariel{
         PhysicalNumber& operator-=  (const PhysicalNumber& num );
         PhysicalNumber operator-() const;
 
+                                                                            //boolean operators methods
 
         bool operator>=  (const PhysicalNumber num ) const;
         bool operator<= (const PhysicalNumber num ) const;
@@ -40,6 +41,7 @@ namespace ariel{
         bool operator>  (const PhysicalNumber num )const;
         bool operator== (const PhysicalNumber num )const;
         bool operator!= (const PhysicalNumber num )const;
+                                                                            //friends methods
 
         friend ostream& operator<< (ostream& os , const PhysicalNumber& num );
         friend istream& operator>> (istream& is ,  PhysicalNumber& num ); 
