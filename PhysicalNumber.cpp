@@ -281,63 +281,63 @@ PhysicalNumber PhysicalNumber::defineType(double val) const
     return result;
 }
 
-int main()
-{
-    cout << "hi" << endl;
-    PhysicalNumber p(3, Unit::HOUR);
-    PhysicalNumber t(10, Unit::SEC);
+// int main()
+// {
+//     cout << "hi" << endl;
+//     PhysicalNumber p(3, Unit::HOUR);
+//     PhysicalNumber t(10, Unit::SEC);
 
-    cout << p + t << endl;
-    cout << t + p << endl;
+//     cout << p + t << endl;
+//     cout << t + p << endl;
 
-    cout << "***************1****************" << endl;
+//     cout << "***************1****************" << endl;
 
-    //cout << (p+=t) << endl;
+//     //cout << (p+=t) << endl;
 
-    cout << (p -= t) << endl;
+//     cout << (p -= t) << endl;
 
-    cout << "**************2*****************" << endl;
+//     cout << "**************2*****************" << endl;
 
-    cout << (++p) << endl;
-    cout << (--p) << endl;
+//     cout << (++p) << endl;
+//     cout << (--p) << endl;
 
-    cout << "***************3****************" << endl;
+//     cout << "***************3****************" << endl;
 
-    PhysicalNumber a(6, Unit::M);
-    PhysicalNumber b(5, Unit::KM);
+//     PhysicalNumber a(6, Unit::M);
+//     PhysicalNumber b(5, Unit::KM);
 
-    cout << a - b << endl;
-    cout << b - a << endl;
+//     cout << a - b << endl;
+//     cout << b - a << endl;
 
-    cout << "**************4*****************" << endl;
+//     cout << "**************4*****************" << endl;
 
-    cout << -a << endl;
+//     cout << -a << endl;
 
-    cout << "***************5****************" << endl;
+//     cout << "***************5****************" << endl;
 
-    PhysicalNumber x(60, Unit::MIN);
-    PhysicalNumber y(1, Unit::KG);
+//     PhysicalNumber x(60, Unit::MIN);
+//     PhysicalNumber y(1, Unit::KG);
 
-    //  cout << "x now is: " << x << endl;
+//     //  cout << "x now is: " << x << endl;
 
-    // cout << (x++) << endl;
-    //      cout << "x now is: " << x << endl;
+//     // cout << (x++) << endl;
+//     //      cout << "x now is: " << x << endl;
 
-    //  cout << (x--) << endl;
-      cout << "x now is: " << x << endl;
+//     //  cout << (x--) << endl;
+//       cout << "x now is: " << x << endl;
 
- cout << "***************6****************" << endl;
+//  cout << "***************6****************" << endl;
 
-   // bool flag = y != x;
-  //  cout << flag << endl;
-          cout << "y now is: " << y << endl;
+//    // bool flag = y != x;
+//   //  cout << flag << endl;
+//           cout << "y now is: " << y << endl;
 
-    istringstream input("333[kgg]");
-    input >> x;
-    cout << x << endl;     
+//     istringstream input("333[kgg]");
+//     input >> x;
+//     cout << x << endl;     
     
-  //  cout << x + y << endl;
+//   //  cout << x + y << endl;
 
     
-    return 0;
-}
+//     return 0;
+// }
