@@ -4,10 +4,9 @@
 
 #include <sstream>
 
-
 using namespace ariel;
 
-PhysicalNumber PhysicalNumber::operator+ (const PhysicalNumber &num) const
+PhysicalNumber PhysicalNumber::operator+(const PhysicalNumber &num) const
 {
 
     double ans;
@@ -25,66 +24,63 @@ PhysicalNumber PhysicalNumber::operator+ (const PhysicalNumber &num) const
     }
 }
 
-PhysicalNumber PhysicalNumber::operator- (const PhysicalNumber &num) const
+PhysicalNumber PhysicalNumber::operator-(const PhysicalNumber &num) const
 {
     PhysicalNumber temp((-1) * (num.value), num.type);
     return (*this + temp);
 }
 
-PhysicalNumber &PhysicalNumber::operator++ ()
+PhysicalNumber &PhysicalNumber::operator++()
 {
     this->value++;
     return *this;
 }
 
-PhysicalNumber &PhysicalNumber::operator-- ()
+PhysicalNumber &PhysicalNumber::operator--()
 {
     this->value--;
     return *this;
 }
 
-PhysicalNumber PhysicalNumber::operator++ (int)
+PhysicalNumber PhysicalNumber::operator++(int)
 {
     PhysicalNumber res(this->value, this->type);
     ++(*this);
     return res;
 }
 
-PhysicalNumber PhysicalNumber::operator-- (int)
+PhysicalNumber PhysicalNumber::operator--(int)
 {
-     PhysicalNumber res(this->value, this->type);
+    PhysicalNumber res(this->value, this->type);
     --(*this);
     return res;
 }
 
-PhysicalNumber &PhysicalNumber::operator+= (const PhysicalNumber &num)
+PhysicalNumber &PhysicalNumber::operator+=(const PhysicalNumber &num)
 {
     *this = *this + num;
     return *this;
 }
 
-PhysicalNumber PhysicalNumber::operator+ () const
+PhysicalNumber PhysicalNumber::operator+() const
 {
     return *this;
 }
 
 // +A
-PhysicalNumber &PhysicalNumber::operator-= (const PhysicalNumber &num)
+PhysicalNumber &PhysicalNumber::operator-=(const PhysicalNumber &num)
 {
     *this = *this - num;
     return *this;
 }
 
 // num = A-B
-PhysicalNumber PhysicalNumber::operator- () const
+PhysicalNumber PhysicalNumber::operator-() const
 {
     return PhysicalNumber((-1) * this->value, this->type);
 } // -A
 
-
-
-
-bool PhysicalNumber::operator>= (const PhysicalNumber num) const
+bool PhysicalNumber::operator>=(const PhysicalNumber num) const
 {
     if ((int)this->type % 3 == (int)num.type % 3)
     {
@@ -98,8 +94,7 @@ bool PhysicalNumber::operator>= (const PhysicalNumber num) const
     }
 }
 
-
-bool PhysicalNumber::operator<= (const PhysicalNumber num) const
+bool PhysicalNumber::operator<=(const PhysicalNumber num) const
 {
     if ((int)this->type % 3 == (int)num.type % 3)
     {
@@ -113,73 +108,80 @@ bool PhysicalNumber::operator<= (const PhysicalNumber num) const
     }
 }
 
-
-bool PhysicalNumber::operator< (const PhysicalNumber num) const
+bool PhysicalNumber::operator<(const PhysicalNumber num) const
 {
-    if(*this <= num && !(*this >= num)){
+    if (*this <= num && !(*this >= num))
+    {
         return true;
     }
     return false;
 }
 
-
-bool PhysicalNumber::operator> (const PhysicalNumber num) const
+bool PhysicalNumber::operator>(const PhysicalNumber num) const
 {
-    if(!(*this <= num) && *this >= num){
+    if (!(*this <= num) && *this >= num)
+    {
         return true;
     }
     return false;
 }
 
-
-bool PhysicalNumber::operator== (const PhysicalNumber num) const
+bool PhysicalNumber::operator==(const PhysicalNumber num) const
 {
-    if(*this <= num && *this >= num){
+    if (*this <= num && *this >= num)
+    {
         return true;
     }
     return false;
 }
 
-
-bool PhysicalNumber::operator!= (const PhysicalNumber num) const
+bool PhysicalNumber::operator!=(const PhysicalNumber num) const
 {
-   bool flag = *this == num;
+    bool flag = *this == num;
     return !flag;
 }
 
-
-std::ostream &ariel::operator<< (ostream &os, const PhysicalNumber &num)
+std::ostream &ariel::operator<<(ostream &os, const PhysicalNumber &num)
 {
     char const *units[] = {"cm", "sec", "g", "m", "min", "kg", "km", "hour", "ton"};
     os << num.value << "[" << units[(int)num.type] << "]";
     return os;
 }
 
-std::istream &ariel::operator>> (istream &is,  PhysicalNumber &num)
+std::istream &ariel::operator>>(istream &is, PhysicalNumber &num)
 {
     double temp;
-    string str; 
+    string str;
     is >> temp >> str;
-   
-    if( str.find("[") == string::npos || str.find("]") == string::npos){
-        throw runtime_error("INVALID INPUT");
-    }
     char const *units[] = {"cm", "sec", "g", "m", "min", "kg", "km", "hour", "ton"};
     int save;
-    for(int i = 0; i < 9; i++){
-        if(!(str.substr(str.find("[") + 1, str.length() - 2).compare(units[i]))){   //if equal
-            save = i;
+    bool flag = false;
+
+    if (str.find("[") != string::npos && str.find("]") != string::npos)
+    { //valid input
+        for (int i = 0; i < 9; i++)
+        {
+            if (str.substr(str.find("[") + 1, str.length() - 2).compare(units[i]) == 0)
+            { //if equal
+                save = i;
+                flag = false;
+                break;
+            }
+            else
+            {
+                flag = true;
+            }
         }
-        else{
-            is.setstate(ios::failbit);
-        }
+    }
+
+    if(flag){
+        return is;
+
     }
 
     num.value = temp;
     num.type = static_cast<Unit>(save);
 
-
-    
     return is;
 }
 
@@ -324,20 +326,19 @@ PhysicalNumber PhysicalNumber::defineType(double val) const
 //     //      cout << "x now is: " << x << endl;
 
 //     //  cout << (x--) << endl;
-//       cout << "x now is: " << x << endl;
+//     cout << "x now is: " << x << endl;
 
-//  cout << "***************6****************" << endl;
+//     cout << "***************6****************" << endl;
 
-//    // bool flag = y != x;
-//   //  cout << flag << endl;
-//           cout << "y now is: " << y << endl;
+//     // bool flag = y != x;
+//     //  cout << flag << endl;
+//     cout << "y now is: " << y << endl;
 
 //     istringstream input("333[kgg]");
 //     input >> x;
-//     cout << x << endl;     
-    
-//   //  cout << x + y << endl;
+//     cout << x << endl;
 
-    
+//     //  cout << x + y << endl;
+
 //     return 0;
 // }
